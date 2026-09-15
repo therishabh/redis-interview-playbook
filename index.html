@@ -6,303 +6,243 @@
 <title>Redis Interview Playbook</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=IBM+Plex+Mono:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Serif:wght@500;600;700&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
 <style>
-  /* ============================= TOKENS ============================= */
+  /* ===================== TOKENS ===================== */
   :root{
-    --bg:#F3F2EF;
-    --surface:#FFFFFF;
-    --surface-2:#FAF9F7;
-    --ink-900:#17181C;
-    --ink-700:#40434B;
-    --ink-500:#6C707A;
-    --ink-400:#9497A1;
-    --line:#E2E1DC;
-    --line-strong:#CFCEC7;
-    --accent:#B7311F;
-    --accent-ink:#7E2115;
-    --accent-soft:#F5E3DE;
-    --accent-soft-line:#E9C6BB;
-    --good:#2F7A4F;
-    --good-soft:#E1F0E5;
-    --warn:#96660F;
-    --warn-soft:#F5EBD3;
-    --code-bg:#1D1E23;
-    --code-ink:#E7E6E2;
-    --shadow: 0 1px 2px rgba(23,24,28,.04), 0 6px 20px -8px rgba(23,24,28,.12);
-    --font-display: 'IBM Plex Sans', system-ui, sans-serif;
-    --font-body: 'IBM Plex Sans', system-ui, sans-serif;
-    --font-mono: 'IBM Plex Mono', ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
-    color-scheme: light;
+    --bg:#FBFAF7;
+    --surface:#F3F1EA;
+    --surface-line:#E7E3D8;
+    --ink-900:#1C1B17;
+    --ink-700:#4B493F;
+    --ink-500:#7C7A6C;
+    --ink-400:#A2A091;
+    --line:#E4E0D3;
+    --accent:#A5341F;
+    --accent-ink:#7C2716;
+    --accent-soft:#F4E4DD;
+    --good:#3E7D52;
+    --font-display:'IBM Plex Serif', Georgia, serif;
+    --font-body:'IBM Plex Sans', system-ui, sans-serif;
+    --font-mono:'IBM Plex Mono', ui-monospace, Menlo, Consolas, monospace;
+    color-scheme:light;
   }
   @media (prefers-color-scheme: dark){
     :root:not([data-theme="light"]){
-      --bg:#131318;
-      --surface:#1B1C22;
-      --surface-2:#202128;
-      --ink-900:#EEEDEA;
-      --ink-700:#C3C2C9;
-      --ink-500:#8D909B;
-      --ink-400:#6A6D77;
-      --line:#2C2D34;
-      --line-strong:#3A3B44;
-      --accent:#FF7A5C;
-      --accent-ink:#FFB39F;
-      --accent-soft:#33211D;
-      --accent-soft-line:#5A3229;
-      --good:#5FC98A;
-      --good-soft:#1B2E22;
-      --warn:#E8B655;
-      --warn-soft:#332A16;
-      --code-bg:#0F1013;
-      --code-ink:#E7E6E2;
-      --shadow: 0 1px 2px rgba(0,0,0,.3), 0 10px 30px -10px rgba(0,0,0,.5);
-      color-scheme: dark;
+      --bg:#181611;
+      --surface:#211E17;
+      --surface-line:#332E22;
+      --ink-900:#EEEBE1;
+      --ink-700:#C2BEAE;
+      --ink-500:#8B8877;
+      --ink-400:#605D4E;
+      --line:#332E22;
+      --accent:#FF8968;
+      --accent-ink:#FFB49B;
+      --accent-soft:#2F1F17;
+      --good:#6BC98F;
+      color-scheme:dark;
     }
   }
   :root[data-theme="dark"]{
-    --bg:#131318;
-    --surface:#1B1C22;
-    --surface-2:#202128;
-    --ink-900:#EEEDEA;
-    --ink-700:#C3C2C9;
-    --ink-500:#8D909B;
-    --ink-400:#6A6D77;
-    --line:#2C2D34;
-    --line-strong:#3A3B44;
-    --accent:#FF7A5C;
-    --accent-ink:#FFB39F;
-    --accent-soft:#33211D;
-    --accent-soft-line:#5A3229;
-    --good:#5FC98A;
-    --good-soft:#1B2E22;
-    --warn:#E8B655;
-    --warn-soft:#332A16;
-    --code-bg:#0F1013;
-    --code-ink:#E7E6E2;
-    --shadow: 0 1px 2px rgba(0,0,0,.3), 0 10px 30px -10px rgba(0,0,0,.5);
-    color-scheme: dark;
+    --bg:#181611;
+    --surface:#211E17;
+    --surface-line:#332E22;
+    --ink-900:#EEEBE1;
+    --ink-700:#C2BEAE;
+    --ink-500:#8B8877;
+    --ink-400:#605D4E;
+    --line:#332E22;
+    --accent:#FF8968;
+    --accent-ink:#FFB49B;
+    --accent-soft:#2F1F17;
+    --good:#6BC98F;
+    color-scheme:dark;
   }
 
   *{ box-sizing:border-box; }
+  html{ scroll-behavior:auto; }
   body{
     margin:0; background:var(--bg); color:var(--ink-900);
-    font-family:var(--font-body); font-size:15px; line-height:1.55;
+    font-family:var(--font-body); font-size:17px; line-height:1.5;
     -webkit-font-smoothing:antialiased;
   }
-  h1,h2,h3{ font-family:var(--font-display); text-wrap:balance; margin:0; }
   ::selection{ background:var(--accent-soft); color:var(--accent-ink); }
   a{ color:var(--accent); }
-  .tnum{ font-variant-numeric:tabular-nums; }
-  button{ font-family:inherit; }
   code{ font-family:var(--font-mono); }
+  .tnum{ font-variant-numeric:tabular-nums; }
 
-  /* ============================= SHELL ============================= */
-  .app{ display:flex; min-height:100vh; }
+  /* ===================== SHELL ===================== */
+  .app{ display:flex; align-items:flex-start; }
 
-  /* ---- Sidebar ---- */
   .sidebar{
-    width:298px; flex:0 0 298px; border-right:1px solid var(--line);
-    background:var(--surface-2); position:sticky; top:0; height:100vh;
-    display:flex; flex-direction:column;
+    width:272px; flex:0 0 272px; height:100vh; overflow-y:auto;
+    position:sticky; top:0; border-right:1px solid var(--line);
+    background:var(--surface); padding:0 0 24px;
   }
-  .brand{ padding:20px 20px 14px; border-bottom:1px solid var(--line); }
-  .brand-row{ display:flex; align-items:baseline; gap:8px; }
-  .brand-mark{
-    font-family:var(--font-mono); font-weight:700; font-size:13px;
-    color:var(--accent); letter-spacing:.02em;
-  }
-  .brand-title{ font-size:16px; font-weight:600; letter-spacing:-.01em; }
-  .brand-sub{ margin-top:4px; font-size:12.5px; color:var(--ink-500); }
+  .brand{ padding:22px 22px 16px; }
+  .brand-mark{ font-family:var(--font-mono); font-size:12.5px; color:var(--accent); display:block; margin-bottom:2px; }
+  .brand-title{ font-family:var(--font-display); font-weight:600; font-size:18px; }
+  .brand-sub{ font-size:12px; color:var(--ink-500); margin-top:5px; }
 
-  .progress-block{ padding:14px 20px 16px; border-bottom:1px solid var(--line); }
-  .progress-row{ display:flex; justify-content:space-between; align-items:baseline; margin-bottom:7px; }
-  .progress-label{ font-size:11.5px; text-transform:uppercase; letter-spacing:.07em; color:var(--ink-500); font-weight:600; }
-  .progress-count{ font-family:var(--font-mono); font-size:12.5px; color:var(--ink-700); font-weight:500; }
-  .progress-track{ height:6px; border-radius:99px; background:var(--line); overflow:hidden; }
-  .progress-fill{ height:100%; background:var(--accent); border-radius:99px; transition:width .3s ease; width:0%; }
-
-  .search-block{ padding:14px 20px; border-bottom:1px solid var(--line); }
+  .search-wrap{ padding:0 22px 14px; position:relative; }
   .search-input{
-    width:100%; padding:9px 11px; border-radius:8px; border:1px solid var(--line-strong);
-    background:var(--surface); color:var(--ink-900); font-size:13.5px; font-family:var(--font-body);
+    width:100%; padding:8px 0; border:none; border-bottom:1px solid var(--surface-line);
+    background:transparent; color:var(--ink-900); font-size:14px; font-family:var(--font-body);
   }
-  .search-input:focus{ outline:2px solid var(--accent); outline-offset:1px; }
+  .search-input:focus{ outline:none; border-bottom-color:var(--accent); }
   .search-input::placeholder{ color:var(--ink-400); }
-
-  .nav-scroll{ flex:1; overflow-y:auto; padding:10px 10px 24px; }
-  .nav-section-label{
-    font-size:10.5px; text-transform:uppercase; letter-spacing:.08em; color:var(--ink-400);
-    font-weight:600; padding:12px 10px 6px;
+  .search-results{
+    position:absolute; left:22px; right:22px; top:100%; margin-top:4px;
+    background:var(--bg); border:1px solid var(--line); border-radius:8px;
+    box-shadow:0 8px 24px -6px rgba(0,0,0,.18); max-height:340px; overflow-y:auto; z-index:20;
+    display:none;
   }
+  .search-results.show{ display:block; }
+  .search-result{ display:block; width:100%; text-align:left; padding:9px 12px; border:none; background:none; cursor:pointer; border-bottom:1px solid var(--line); }
+  .search-result:last-child{ border-bottom:none; }
+  .search-result:hover{ background:var(--surface); }
+  .search-result .sid{ font-family:var(--font-mono); font-size:10.5px; color:var(--accent); }
+  .search-result .stext{ display:block; font-size:12.8px; color:var(--ink-900); margin-top:1px; }
+
+  .nav{ padding:6px 12px; }
+  .nav-pin{
+    display:block; width:100%; text-align:left; padding:8px 10px; border:none; background:none;
+    color:var(--accent-ink); font-weight:600; font-size:13.5px; cursor:pointer; border-radius:6px;
+  }
+  .nav-pin:hover{ background:var(--accent-soft); }
+  .nav-divider{ height:1px; background:var(--line); margin:8px 10px 10px; }
+  .nav-label{ font-size:10.5px; text-transform:uppercase; letter-spacing:.07em; color:var(--ink-400); font-weight:600; padding:6px 10px 4px; }
   .nav-item{
-    display:flex; align-items:center; gap:8px; width:100%; text-align:left;
-    padding:7px 10px; border-radius:7px; border:none; background:transparent;
-    color:var(--ink-700); font-size:12.8px; cursor:pointer; line-height:1.35;
+    display:flex; align-items:baseline; gap:8px; width:100%; text-align:left;
+    padding:6.5px 10px 6.5px 13px; border:none; border-left:2px solid transparent; background:none;
+    color:var(--ink-700); font-size:13.3px; cursor:pointer; line-height:1.3;
   }
-  .nav-item:hover{ background:var(--surface); color:var(--ink-900); }
-  .nav-item.active{ background:var(--accent-soft); color:var(--accent-ink); font-weight:600; }
-  .nav-item .n{ flex:1; }
-  .nav-item .stars{ font-size:9px; color:var(--warn); letter-spacing:-1px; white-space:nowrap; }
-  .nav-item .cnt{ font-family:var(--font-mono); font-size:10.5px; color:var(--ink-400); min-width:20px; text-align:right; }
-  .nav-item.final15{ color:var(--accent-ink); font-weight:600; }
-  .nav-item.final15:hover{ background:var(--accent-soft); }
+  .nav-item:hover{ color:var(--ink-900); }
+  .nav-item.active{ border-left-color:var(--accent); color:var(--accent-ink); font-weight:600; background:var(--accent-soft); border-radius:0 6px 6px 0; }
+  .nav-item .t{ flex:1; }
+  .nav-item .s{ font-size:8.5px; color:var(--ink-400); letter-spacing:-1px; white-space:nowrap; }
+  .nav-item.active .s{ color:var(--accent-ink); opacity:.7; }
 
-  .sidebar-footer{ padding:12px 20px 16px; border-top:1px solid var(--line); }
-  .theme-toggle{
-    display:flex; gap:4px; background:var(--surface); border:1px solid var(--line-strong);
-    border-radius:8px; padding:3px;
-  }
-  .theme-toggle button{
-    flex:1; border:none; background:transparent; padding:6px 0; border-radius:6px;
-    font-size:11.5px; color:var(--ink-500); cursor:pointer; font-weight:500;
-  }
-  .theme-toggle button.active{ background:var(--accent); color:#fff; }
+  .sidebar-foot{ padding:16px 22px 4px; margin-top:8px; border-top:1px solid var(--line); }
+  .theme-row{ display:flex; gap:10px; }
+  .theme-row button{ font-family:var(--font-body); border:none; background:none; color:var(--ink-500); font-size:12px; cursor:pointer; padding:0; }
+  .theme-row button.active{ color:var(--accent); font-weight:600; text-decoration:underline; }
 
-  /* ---- Main ---- */
-  .main{ flex:1; min-width:0; }
-  .topbar{
-    position:sticky; top:0; z-index:5; background:var(--bg);
-    border-bottom:1px solid var(--line); padding:16px 32px;
-    display:flex; align-items:baseline; justify-content:space-between; gap:16px;
-  }
-  .topbar-title{ font-size:13px; color:var(--ink-500); }
-  .topbar-title b{ color:var(--ink-900); font-weight:600; }
-  .topbar-meta{ font-family:var(--font-mono); font-size:12px; color:var(--ink-400); }
+  /* ===================== MOBILE TOPBAR + DRAWER ===================== */
+  .mobile-bar{ display:none; }
+  .sidebar-backdrop{ display:none; }
+  @media (max-width:900px){
+    .mobile-bar{
+      display:flex; align-items:center; gap:12px; position:sticky; top:0; z-index:30;
+      background:var(--bg); border-bottom:1px solid var(--line); padding:12px 16px;
+    }
+    .mobile-menu-btn{
+      font-size:16px; line-height:1; background:none; border:1px solid var(--line);
+      border-radius:8px; padding:7px 11px; color:var(--ink-900); cursor:pointer;
+    }
+    .mobile-bar-title{ font-family:var(--font-display); font-weight:600; font-size:15.5px; }
 
-  .content{ max-width:860px; margin:0 auto; padding:28px 32px 120px; }
+    .app{ display:block; }
+    .sidebar{
+      position:fixed; top:0; left:0; z-index:40; width:82vw; max-width:320px;
+      transform:translateX(-100%); transition:transform .22s ease; box-shadow:none;
+    }
+    .sidebar.open{ transform:translateX(0); box-shadow:16px 0 40px -14px rgba(0,0,0,.35); }
 
-  .final15-panel{
-    background:var(--accent-soft); border:1px solid var(--accent-soft-line);
-    border-radius:12px; padding:20px 22px; margin-bottom:40px;
-  }
-  .final15-panel h2{ font-size:15px; color:var(--accent-ink); margin-bottom:4px; }
-  .final15-panel .desc{ font-size:12.8px; color:var(--ink-700); margin-bottom:14px; }
-  .final15-grid{ display:grid; grid-template-columns:1fr 1fr; gap:8px 14px; }
-  @media (max-width:640px){ .final15-grid{ grid-template-columns:1fr; } }
-  .final15-item{
-    display:flex; gap:9px; align-items:baseline; padding:7px 9px; border-radius:7px;
-    cursor:pointer; font-size:12.8px; color:var(--ink-800, var(--ink-900));
-  }
-  .final15-item:hover{ background:rgba(0,0,0,.04); }
-  .final15-item .idx{ font-family:var(--font-mono); font-weight:700; color:var(--accent-ink); font-size:11px; flex:0 0 15px; }
+    .sidebar-backdrop{
+      display:block; position:fixed; inset:0; background:rgba(20,18,12,.45); z-index:35;
+      opacity:0; pointer-events:none; transition:opacity .2s ease;
+    }
+    .sidebar-backdrop.show{ opacity:1; pointer-events:auto; }
 
-  .topic-group{ margin-bottom:8px; scroll-margin-top:70px; }
-  .topic-head{
-    display:flex; align-items:baseline; gap:10px; padding:26px 0 12px;
-    border-bottom:1px solid var(--line); margin-bottom:14px;
+    .page{ padding:32px 22px 100px; }
   }
-  .topic-head .num{ font-family:var(--font-mono); color:var(--accent); font-weight:700; font-size:13px; }
-  .topic-head h2{ font-size:19px; flex:1; }
-  .topic-head .stars{ color:var(--warn); font-size:12px; letter-spacing:-1px; }
-  .topic-head .qcount{ font-family:var(--font-mono); font-size:11.5px; color:var(--ink-400); }
 
-  /* ---- Question card ---- */
-  .qcard{
-    background:var(--surface); border:1px solid var(--line); border-radius:11px;
-    margin-bottom:10px; box-shadow:var(--shadow); scroll-margin-top:70px;
-    transition:border-color .15s ease;
-  }
-  .qcard.flash{ border-color:var(--accent); }
-  .qhead{
-    display:flex; align-items:flex-start; gap:12px; width:100%; text-align:left;
-    background:none; border:none; padding:14px 16px; cursor:pointer; color:inherit;
-  }
-  .qhead .id{
-    font-family:var(--font-mono); font-size:11.5px; font-weight:600; color:var(--accent);
-    background:var(--accent-soft); border-radius:5px; padding:3px 6px; flex:0 0 auto;
-    margin-top:1px;
-  }
-  .qhead .qtext{ flex:1; font-size:14.5px; font-weight:500; line-height:1.45; padding-top:1px; }
-  .qhead .chev{
-    flex:0 0 auto; color:var(--ink-400); font-size:11px; margin-top:4px;
-    transition:transform .18s ease;
-  }
-  .qcard.open .qhead .chev{ transform:rotate(90deg); color:var(--accent); }
-  .qhead .reviewed-dot{
-    flex:0 0 auto; width:16px; height:16px; border-radius:5px; margin-top:2px;
-    border:1.5px solid var(--line-strong); background:var(--surface); cursor:pointer;
-    display:flex; align-items:center; justify-content:center; color:#fff; font-size:10px;
-  }
-  .qhead .reviewed-dot.on{ background:var(--good); border-color:var(--good); }
+  /* ===================== MAIN ===================== */
+  .main{ flex:1; min-width:0; min-height:100vh; }
+  .page{ max-width:700px; margin:0 auto; padding:56px 40px 140px; }
 
-  .qbody{ display:none; padding:0 18px 20px 46px; }
-  .qcard.open .qbody{ display:block; }
+  .page-eyebrow{ font-family:var(--font-mono); font-size:12px; color:var(--accent); margin-bottom:10px; }
+  .page-eyebrow .stars{ color:var(--ink-400); margin-left:8px; letter-spacing:-1px; }
+  .page h1{ font-family:var(--font-display); font-size:32px; font-weight:600; line-height:1.2; text-wrap:balance; margin:0 0 10px; }
+  .page-desc{ color:var(--ink-500); font-size:15px; line-height:1.6; margin-bottom:8px; max-width:62ch; }
 
-  .field{ padding:12px 0; border-top:1px solid var(--line); }
-  .field:first-child{ border-top:none; padding-top:4px; }
-  .field-label{
-    display:block; font-family:var(--font-mono); font-size:10.5px; text-transform:uppercase;
-    letter-spacing:.07em; color:var(--ink-500); font-weight:600; margin-bottom:5px;
+  .final15-list{ margin-top:30px; list-style:none; padding:0; counter-reset:f15; }
+  .final15-list li{ counter-increment:f15; padding:14px 0; border-top:1px solid var(--line); }
+  .final15-list li:last-child{ border-bottom:1px solid var(--line); }
+  .final15-link{ display:flex; gap:14px; align-items:baseline; cursor:pointer; }
+  .final15-link::before{ content:counter(f15); font-family:var(--font-mono); color:var(--accent); font-size:13px; flex:0 0 18px; }
+  .final15-link span{ font-size:15.5px; color:var(--ink-900); }
+  .final15-link:hover span{ color:var(--accent-ink); }
+
+  .home-hint{ margin-top:34px; padding:16px 18px; background:var(--surface); border-radius:10px; font-size:13.5px; color:var(--ink-500); }
+  .home-hint b{ color:var(--ink-700); }
+
+  .qsep{ border:none; border-top:1px solid var(--line); margin:38px 0; }
+
+  .qhead{ margin-bottom:14px; scroll-margin-top:26px; }
+  .qhead .qh-text{ flex:1; }
+  .qhead .qid{ font-family:var(--font-mono); font-size:11.5px; color:var(--ink-400); display:block; margin-bottom:3px; }
+  .qhead h3{ font-family:var(--font-display); font-size:21px; font-weight:600; line-height:1.35; margin:0; text-wrap:balance; }
+
+  .qbody{ font-size:16.5px; line-height:1.75; color:var(--ink-700); max-width:66ch; }
+  .qbody p{ margin:0 0 14px; }
+  .qbody p:last-child{ margin-bottom:0; }
+  .qbody strong{ color:var(--ink-900); font-weight:600; }
+  .qbody ul, .qbody ol{ margin:0 0 14px; padding-left:22px; }
+  .qbody li{ margin-bottom:5px; }
+  .qbody code{ background:var(--surface); border:1px solid var(--surface-line); border-radius:4px; padding:1.5px 5px; font-size:14px; color:var(--accent-ink); }
+  .qbody pre{ background:#282C34; border-radius:9px; padding:15px 17px; overflow-x:auto; margin:6px 0 16px; max-width:100%; }
+  .qbody pre code{ background:none; border:none; padding:0; color:inherit; font-size:13.3px; line-height:1.6; }
+
+  .callout-tip, .callout-short{
+    border-left:3px solid var(--accent); background:var(--surface); border-radius:0 8px 8px 0;
+    padding:12px 16px; margin:0 0 14px !important;
   }
-  .field-body{ font-size:14px; color:var(--ink-700); line-height:1.6; }
-  .field-body p{ margin:0 0 8px; }
-  .field-body p:last-child{ margin-bottom:0; }
-  .field-body ul, .field-body ol{ margin:0; padding-left:20px; }
-  .field-body li{ margin-bottom:4px; }
-  .field-body code{ background:var(--surface-2); border:1px solid var(--line); border-radius:4px; padding:1px 5px; font-size:12.5px; color:var(--accent-ink); }
+  .callout-short{ font-size:16.5px; }
+  .callout-short strong, .callout-tip strong{ color:var(--accent-ink); }
 
-  .field.-tip{ background:var(--warn-soft); border-radius:8px; border-top:none; padding:12px 14px; margin:10px 0; }
-  .field.-tip .field-label{ color:var(--warn); }
-  .field.-short{ background:var(--accent-soft); border-radius:8px; border-top:none; padding:14px 16px; margin-top:12px; }
-  .field.-short .field-label{ color:var(--accent-ink); }
-  .field.-short .field-body{ color:var(--ink-900); font-weight:500; }
-
-  .code-cluster{ margin:10px 0 14px; border:1px solid var(--line-strong); border-radius:10px; overflow:hidden; }
-  .code-cluster pre{ margin:0; background:var(--code-bg); padding:14px 16px; overflow-x:auto; }
-  .code-cluster pre code.hljs{ background:none; padding:0; font-size:12.5px; line-height:1.6; }
-  .code-notes{ background:var(--surface-2); padding:2px 16px 6px; }
-  .code-note{ padding:8px 0; border-top:1px solid var(--line); font-size:12.8px; }
-  .code-note:first-child{ border-top:none; }
-  .code-note .cl{ font-family:var(--font-mono); font-size:10px; text-transform:uppercase; letter-spacing:.06em; color:var(--ink-400); font-weight:600; display:block; margin-bottom:3px; }
-  .code-note .cb{ color:var(--ink-700); line-height:1.55; }
-  .code-note .cb code{ background:var(--surface); border:1px solid var(--line); border-radius:4px; padding:1px 4px; font-size:11.8px; }
-
-  .empty-state{ text-align:center; padding:60px 20px; color:var(--ink-500); font-size:13.5px; }
-
-  @media (max-width:860px){
-    .sidebar{ display:none; }
-    .content{ padding:22px 18px 100px; }
-    .topbar{ padding:14px 18px; }
-    .qbody{ padding-left:16px; }
+  .qcard.flash{ animation:flashbg 1.6s ease; }
+  @media (prefers-reduced-motion: no-preference){
+    @keyframes flashbg{ 0%{ background:var(--accent-soft); } 100%{ background:transparent; } }
   }
+
+  .loading{ padding:60px 0; color:var(--ink-500); font-size:14px; }
 </style>
 </head>
 <body>
 
 
+<div class="mobile-bar">
+  <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Open topics menu">☰</button>
+  <span class="mobile-bar-title">Interview Playbook</span>
+</div>
+<div class="sidebar-backdrop" id="sidebarBackdrop"></div>
+
 <div class="app">
-  <aside class="sidebar">
+  <aside class="sidebar" id="sidebar">
     <div class="brand">
-      <div class="brand-row">
-        <span class="brand-mark">redis-cli&gt;</span>
-        <span class="brand-title">Interview Playbook</span>
-      </div>
+      <span class="brand-mark">redis-cli&gt;</span>
+      <span class="brand-title">Interview Playbook</span>
       <div class="brand-sub">356 questions · 23 topics · 15 scenarios</div>
     </div>
 
-    <div class="progress-block">
-      <div class="progress-row">
-        <span class="progress-label">Reviewed</span>
-        <span class="progress-count tnum" id="progressCount">0 / 356</span>
-      </div>
-      <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
-    </div>
-
-    <div class="search-block">
+    <div class="search-wrap">
       <input class="search-input" id="searchInput" type="text" placeholder="Search questions…" autocomplete="off">
+      <div class="search-results" id="searchResults"></div>
     </div>
 
-    <nav class="nav-scroll" id="navScroll">
-      <button class="nav-item final15" data-jump="final15">
-        <span class="n">★ Final 15 — Must Prepare</span>
-      </button>
-      <div class="nav-section-label">Topics</div>
+    <div class="nav">
+      <button class="nav-pin" data-goto="final15">★ Final 15 — Must Prepare</button>
+      <div class="nav-divider"></div>
+      <div class="nav-label">Topics</div>
       <div id="topicNav"></div>
-    </nav>
+    </div>
 
-    <div class="sidebar-footer">
-      <div class="theme-toggle" id="themeToggle">
+    <div class="sidebar-foot">
+      <div class="theme-row" id="themeToggle">
         <button data-theme-choice="light">Light</button>
         <button data-theme-choice="system" class="active">Auto</button>
         <button data-theme-choice="dark">Dark</button>
@@ -311,13 +251,7 @@
   </aside>
 
   <main class="main">
-    <div class="topbar">
-      <div class="topbar-title">Redis Interview Playbook — <b>Senior Backend / Full‑Stack track</b></div>
-      <div class="topbar-meta tnum" id="visibleCount">356 shown</div>
-    </div>
-    <div class="content" id="content">
-      <div class="empty-state">Loading…</div>
-    </div>
+    <div class="page" id="page"><div class="loading">Loading…</div></div>
   </main>
 </div>
 
@@ -334,17 +268,11 @@ window.GUIDE_DATA = {"topics": [{"num": "1", "name": "Redis Fundamentals", "star
 (function(){
   "use strict";
   var DATA = window.GUIDE_DATA || {topics:[], questions:[], final15:[]};
-  var PRIMARY_LABELS = ["Simple Answer","Detailed Explanation","Real-World Example","Production Use Case","Interview Tip","Possible Follow-up Questions","Common Mistakes","Short Interview-Ready Answer"];
-  var CODE_LABELS = ["Line-by-line","Why this approach","Race conditions","Error handling","Production considerations","Note"];
 
-  // ---------- reviewed state (per-viewer convenience only) ----------
-  var reviewed = {};
-  try{
-    var stored = localStorage.getItem('redis-playbook-reviewed');
-    if(stored) reviewed = JSON.parse(stored) || {};
-  }catch(e){ reviewed = {}; }
-  function saveReviewed(){
-    try{ localStorage.setItem('redis-playbook-reviewed', JSON.stringify(reviewed)); }catch(e){}
+  function escapeHTML(s){
+    return String(s).replace(/[&<>"']/g, function(c){
+      return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];
+    });
   }
 
   // ---------- theme ----------
@@ -353,10 +281,11 @@ window.GUIDE_DATA = {"topics": [{"num": "1", "name": "Redis Fundamentals", "star
     else if(choice === 'dark'){ document.documentElement.setAttribute('data-theme','dark'); }
     else { document.documentElement.removeAttribute('data-theme'); }
     try{ localStorage.setItem('redis-playbook-theme', choice); }catch(e){}
-    var btns = document.querySelectorAll('.theme-toggle button');
-    btns.forEach(function(b){ b.classList.toggle('active', b.getAttribute('data-theme-choice') === choice); });
+    document.querySelectorAll('.theme-row button').forEach(function(b){
+      b.classList.toggle('active', b.getAttribute('data-theme-choice') === choice);
+    });
   }
-  (function initTheme(){
+  (function(){
     var saved = 'system';
     try{ saved = localStorage.getItem('redis-playbook-theme') || 'system'; }catch(e){}
     applyTheme(saved);
@@ -366,325 +295,212 @@ window.GUIDE_DATA = {"topics": [{"num": "1", "name": "Redis Fundamentals", "star
     if(btn) applyTheme(btn.getAttribute('data-theme-choice'));
   });
 
-  // ---------- marked / highlight setup ----------
-  marked.setOptions({
-    highlight: null,
-    gfm: true,
-    breaks: false
-  });
-
-  function renderMarkdownField(md){
-    var html = marked.parse(md || '');
-    var wrap = document.createElement('div');
-    wrap.innerHTML = html;
-    return wrap;
-  }
-
-  // transforms a rendered markdown DOM fragment into structured .field / code-cluster blocks
-  function buildBody(md){
-    var frag = renderMarkdownField(md);
-    var out = document.createElement('div');
-    var nodes = Array.prototype.slice.call(frag.childNodes);
-    var i = 0;
-    var pendingCodeNotes = null; // {wrapEl, notesEl}
-
-    function labelOf(pEl){
-      if(!pEl || pEl.tagName !== 'P') return null;
-      var strong = pEl.querySelector(':scope > strong');
-      if(!strong || pEl.firstChild !== strong) return null;
-      var t = strong.textContent.trim();
-      if(t.charAt(t.length-1) !== ':') return null;
-      t = t.slice(0, -1);
-      if(PRIMARY_LABELS.indexOf(t) === -1 && CODE_LABELS.indexOf(t) === -1) return null;
-      return t;
-    }
-
-    function remainderHTML(pEl, strongEl){
-      var html = '';
-      var started = false;
-      Array.prototype.forEach.call(pEl.childNodes, function(n){
-        if(n === strongEl){ started = true; return; }
-        if(!started) return;
-        if(n.nodeType === 3){ html += n.textContent; }
-        else { html += n.outerHTML; }
-      });
-      return html.trim();
-    }
-
-    while(i < nodes.length){
-      var node = nodes[i];
-      if(node.nodeType === 1 && node.tagName === 'P'){
-        var lbl = labelOf(node);
-        if(lbl){
-          var strongEl = node.querySelector(':scope > strong');
-          var restHTML = remainderHTML(node, strongEl);
-          var bodyEl = document.createElement('div');
-          bodyEl.innerHTML = restHTML;
-          // absorb an immediately following list if this paragraph had no other text
-          var next = nodes[i+1];
-          if(restHTML === '' && next && next.nodeType === 1 && (next.tagName === 'UL' || next.tagName === 'OL')){
-            bodyEl.appendChild(next.cloneNode(true));
-            i++;
-          }
-          if(CODE_LABELS.indexOf(lbl) !== -1){
-            if(!pendingCodeNotes){
-              pendingCodeNotes = document.createElement('div');
-              pendingCodeNotes.className = 'code-notes';
-              // attach to the most recently added code-cluster
-              var lastCluster = out.lastElementChild;
-              if(lastCluster && lastCluster.classList.contains('code-cluster')){
-                lastCluster.appendChild(pendingCodeNotes);
-              } else {
-                out.appendChild(pendingCodeNotes);
-              }
-            }
-            var noteEl = document.createElement('div');
-            noteEl.className = 'code-note';
-            var clEl = document.createElement('span'); clEl.className='cl'; clEl.textContent = lbl;
-            var cbEl = document.createElement('div'); cbEl.className='cb'; cbEl.innerHTML = bodyEl.innerHTML;
-            noteEl.appendChild(clEl); noteEl.appendChild(cbEl);
-            pendingCodeNotes.appendChild(noteEl);
-          } else {
-            pendingCodeNotes = null;
-            var fieldEl = document.createElement('div');
-            fieldEl.className = 'field';
-            if(lbl === 'Interview Tip') fieldEl.classList.add('-tip');
-            if(lbl === 'Short Interview-Ready Answer') fieldEl.classList.add('-short');
-            var flabel = document.createElement('span'); flabel.className='field-label'; flabel.textContent = lbl;
-            var fbody = document.createElement('div'); fbody.className='field-body'; fbody.innerHTML = bodyEl.innerHTML;
-            fieldEl.appendChild(flabel); fieldEl.appendChild(fbody);
-            out.appendChild(fieldEl);
-          }
-          i++;
-          continue;
-        }
-      }
-      if(node.nodeType === 1 && node.tagName === 'PRE'){
-        pendingCodeNotes = null;
-        var cluster = document.createElement('div');
-        cluster.className = 'code-cluster';
-        cluster.appendChild(node.cloneNode(true));
-        out.appendChild(cluster);
-        i++;
-        continue;
-      }
-      // fallback: unrecognized paragraph/content — drop into a plain field-less block
-      if(node.nodeType === 1){
-        var plain = document.createElement('div');
-        plain.className = 'field-body';
-        plain.style.padding = '4px 0';
-        plain.innerHTML = node.outerHTML;
-        out.appendChild(plain);
-      }
-      i++;
-    }
-    return out;
-  }
-
-  // ---------- build sidebar topic nav ----------
-  var topicNav = document.getElementById('topicNav');
-  var counts = {};
-  DATA.questions.forEach(function(q){ counts[q.topic] = (counts[q.topic]||0) + 1; });
-  DATA.topics.forEach(function(t){
-    var btn = document.createElement('button');
-    btn.className = 'nav-item';
-    btn.setAttribute('data-jump', 'topic-' + t.num);
-    var stars = t.stars > 0 ? '<span class="stars">' + '★'.repeat(t.stars) + '</span>' : '';
-    btn.innerHTML = '<span class="n">' + (t.num === 'S' ? '' : (t.num + '. ')) + escapeHTML(t.name) + '</span>' + stars + '<span class="cnt tnum">' + (counts[t.num]||0) + '</span>';
-    topicNav.appendChild(btn);
-  });
-
-  function escapeHTML(s){
-    return String(s).replace(/[&<>"']/g, function(c){
-      return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];
-    });
-  }
-
-  // ---------- render main content ----------
-  var contentEl = document.getElementById('content');
-  contentEl.innerHTML = '';
-
-  // Final 15 panel
-  var f15 = document.createElement('div');
-  f15.className = 'final15-panel';
-  f15.id = 'final15';
-  var f15Grid = DATA.final15.map(function(item, idx){
-    return '<div class="final15-item" data-goto="' + item.primary + '"><span class="idx">' + (idx+1) + '.</span><span>' + escapeHTML(item.text) + '</span></div>';
-  }).join('');
-  f15.innerHTML = '<h2>★ Final 15 — Must Prepare</h2><div class="desc">A bookmark list, not new content — each links to the fullest answer already written elsewhere in this guide.</div><div class="final15-grid">' + f15Grid + '</div>';
-  contentEl.appendChild(f15);
-
+  // ---------- data indexes ----------
+  var qById = {};
+  DATA.questions.forEach(function(q){ qById[q.id] = q; });
   var qByTopic = {};
-  DATA.questions.forEach(function(q){
-    (qByTopic[q.topic] = qByTopic[q.topic] || []).push(q);
-  });
+  DATA.questions.forEach(function(q){ (qByTopic[q.topic] = qByTopic[q.topic] || []).push(q); });
+  var topicByNum = {};
+  DATA.topics.forEach(function(t){ topicByNum[t.num] = t; });
 
-  var qCardEls = {}; // id -> {card, bodyBuilt}
-
+  // ---------- sidebar topic nav ----------
+  var topicNav = document.getElementById('topicNav');
   DATA.topics.forEach(function(t){
     var qs = qByTopic[t.num] || [];
     if(!qs.length) return;
-    var group = document.createElement('div');
-    group.className = 'topic-group';
-    group.id = 'topic-' + t.num;
+    var btn = document.createElement('button');
+    btn.className = 'nav-item';
+    btn.setAttribute('data-goto', 'topic-' + t.num);
+    var label = (t.num === 'S' ? '' : (t.num + '. ')) + t.name;
+    var stars = t.stars > 0 ? '<span class="s">' + '★'.repeat(t.stars) + '</span>' : '';
+    btn.innerHTML = '<span class="t">' + escapeHTML(label) + '</span>' + stars;
+    topicNav.appendChild(btn);
+  });
+  var navButtons = Array.prototype.slice.call(document.querySelectorAll('.nav-item, .nav-pin'));
 
-    var head = document.createElement('div');
-    head.className = 'topic-head';
+  function setActiveNav(key){
+    navButtons.forEach(function(b){ b.classList.toggle('active', b.getAttribute('data-goto') === key); });
+  }
+
+  // ---------- markdown rendering ----------
+  marked.setOptions({ gfm:true, breaks:false });
+
+  var CALLOUT_MAP = {
+    'Interview Tip': 'callout-tip',
+    'Short Interview-Ready Answer': 'callout-short'
+  };
+
+  function renderQuestionBody(md){
+    var html = marked.parse(md || '');
+    var wrap = document.createElement('div');
+    wrap.innerHTML = html;
+    Array.prototype.forEach.call(wrap.querySelectorAll('p'), function(p){
+      var strong = p.querySelector(':scope > strong');
+      if(strong && p.firstChild === strong){
+        var t = strong.textContent.trim().replace(/:$/, '');
+        if(CALLOUT_MAP[t]) p.classList.add(CALLOUT_MAP[t]);
+      }
+    });
+    return wrap.innerHTML;
+  }
+
+  var builtTopics = {}; // cache rendered topic HTML by num
+
+  function buildTopicPage(num){
+    if(builtTopics[num]) return builtTopics[num];
+    var t = topicByNum[num];
+    var qs = qByTopic[num] || [];
     var stars = t.stars > 0 ? '<span class="stars">' + '★'.repeat(t.stars) + '☆'.repeat(5-t.stars) + '</span>' : '';
-    head.innerHTML = '<span class="num">' + (t.num === 'S' ? 'SCN' : ('#' + t.num)) + '</span><h2>' + escapeHTML(t.name) + '</h2>' + stars + '<span class="qcount tnum">' + qs.length + ' Q</span>';
-    group.appendChild(head);
+    var out = document.createElement('div');
+    out.innerHTML =
+      '<div class="page-eyebrow">' + (num === 'S' ? 'Scenarios' : ('Topic ' + num + ' of 23')) + stars + '</div>' +
+      '<h1>' + escapeHTML(t.name) + '</h1>' +
+      '<div class="page-desc">' + qs.length + ' question' + (qs.length===1?'':'s') + ' in this topic.</div>';
 
-    qs.forEach(function(q){
+    qs.forEach(function(q, idx){
+      if(idx > 0){
+        var sep = document.createElement('hr');
+        sep.className = 'qsep';
+        out.appendChild(sep);
+      }
       var card = document.createElement('div');
       card.className = 'qcard';
       card.id = 'q-' + q.id;
 
-      var qhead = document.createElement('button');
-      qhead.className = 'qhead';
-      qhead.innerHTML =
-        '<span class="id">' + q.id + '</span>' +
-        '<span class="qtext">' + escapeHTML(q.q) + '</span>' +
-        '<span class="chev">▶</span>';
-      var dot = document.createElement('span');
-      dot.className = 'reviewed-dot' + (reviewed[q.id] ? ' on' : '');
-      dot.innerHTML = reviewed[q.id] ? '✓' : '';
-      dot.title = 'Mark reviewed';
-      qhead.insertBefore(dot, qhead.firstChild);
+      var head = document.createElement('div');
+      head.className = 'qhead';
+      head.innerHTML =
+        '<div class="qh-text"><span class="qid">' + q.id + '</span><h3>' + escapeHTML(q.q) + '</h3></div>';
 
       var body = document.createElement('div');
       body.className = 'qbody';
+      body.innerHTML = renderQuestionBody(q.body);
 
-      card.appendChild(qhead);
+      card.appendChild(head);
       card.appendChild(body);
-      group.appendChild(card);
-
-      qCardEls[q.id] = { card: card, body: body, built: false, raw: q };
-
-      qhead.addEventListener('click', function(e){
-        if(e.target === dot) return;
-        toggleCard(q.id);
-      });
-      dot.addEventListener('click', function(e){
-        e.stopPropagation();
-        reviewed[q.id] = !reviewed[q.id];
-        dot.classList.toggle('on', !!reviewed[q.id]);
-        dot.innerHTML = reviewed[q.id] ? '✓' : '';
-        saveReviewed();
-        updateProgress();
-      });
+      out.appendChild(card);
     });
 
-    contentEl.appendChild(group);
-  });
-
-  function ensureBuilt(id){
-    var entry = qCardEls[id];
-    if(!entry || entry.built) return;
-    var built = buildBody(entry.raw.body);
-    entry.body.appendChild(built);
-    entry.built = true;
-    entry.body.querySelectorAll('pre code').forEach(function(el){
-      try{ hljs.highlightElement(el); }catch(e){}
-    });
+    builtTopics[num] = out;
+    return out;
   }
 
-  function toggleCard(id){
-    var entry = qCardEls[id];
-    if(!entry) return;
-    ensureBuilt(id);
-    entry.card.classList.toggle('open');
+  function buildFinal15Page(){
+    var out = document.createElement('div');
+    var items = DATA.final15.map(function(item, i){
+      return '<li><div class="final15-link" data-goto-q="' + item.primary + '"><span>' + escapeHTML(item.text) + '</span></div></li>';
+    }).join('');
+    out.innerHTML =
+      '<div class="page-eyebrow">★ Bookmark list</div>' +
+      '<h1>Final 15 — Must Prepare</h1>' +
+      '<div class="page-desc">Not new content — each of these links to the fullest answer already written elsewhere in this guide. Use this as your last-mile revision list.</div>' +
+      '<ol class="final15-list">' + items + '</ol>' +
+      '<div class="home-hint">Pick a topic on the left to read through it in full, or use the search box above to jump straight to a question.</div>';
+    return out;
   }
 
-  function openCard(id){
-    var entry = qCardEls[id];
-    if(!entry) return;
-    ensureBuilt(id);
-    entry.card.classList.add('open');
+  var pageEl = document.getElementById('page');
+
+  function showTopic(num, opts){
+    opts = opts || {};
+    if(!topicByNum[num]) num = DATA.topics.filter(function(t){ return (qByTopic[t.num]||[]).length; })[0].num;
+    pageEl.innerHTML = '';
+    pageEl.appendChild(buildTopicPage(num));
+    pageEl.querySelectorAll('pre code').forEach(function(el){ try{ hljs.highlightElement(el); }catch(e){} });
+    setActiveNav('topic-' + num);
+    if(!opts.skipScrollTop) window.scrollTo(0,0);
+    if(!opts.skipHash) location.hash = 'topic-' + num;
+    if(opts.focusQid){
+      var card = document.getElementById('q-' + opts.focusQid);
+      if(card){
+        card.scrollIntoView({block:'start'});
+        card.classList.add('flash');
+        setTimeout(function(){ card.classList.remove('flash'); }, 1700);
+      }
+    }
   }
 
-  function updateProgress(){
-    var total = DATA.questions.length;
-    var done = 0;
-    for(var k in reviewed){ if(reviewed[k]) done++; }
-    document.getElementById('progressCount').textContent = done + ' / ' + total;
-    document.getElementById('progressFill').style.width = (total ? (done/total*100) : 0) + '%';
+  function showFinal15(){
+    pageEl.innerHTML = '';
+    pageEl.appendChild(buildFinal15Page());
+    setActiveNav('final15');
+    window.scrollTo(0,0);
+    location.hash = 'final15';
   }
-  updateProgress();
 
-  // ---------- nav jump / scroll spy ----------
-  document.getElementById('navScroll').addEventListener('click', function(e){
-    var btn = e.target.closest('[data-jump]');
-    if(!btn) return;
-    var id = btn.getAttribute('data-jump');
-    var el = document.getElementById(id);
-    if(el) el.scrollIntoView({behavior:'smooth', block:'start'});
-  });
+  function gotoQuestion(qid){
+    var q = qById[qid];
+    if(!q) return;
+    showTopic(q.topic, { focusQid: qid, skipScrollTop:true });
+  }
 
-  contentEl.addEventListener('click', function(e){
-    var item = e.target.closest('.final15-item');
-    if(!item) return;
-    var id = item.getAttribute('data-goto');
-    openCard(id);
-    var card = document.getElementById('q-' + id);
-    if(card){
-      card.scrollIntoView({behavior:'smooth', block:'center'});
-      card.classList.add('flash');
-      setTimeout(function(){ card.classList.remove('flash'); }, 1600);
+  // ---------- mobile drawer ----------
+  var sidebarEl = document.getElementById('sidebar');
+  var backdropEl = document.getElementById('sidebarBackdrop');
+  function openDrawer(){ sidebarEl.classList.add('open'); backdropEl.classList.add('show'); }
+  function closeDrawer(){ sidebarEl.classList.remove('open'); backdropEl.classList.remove('show'); }
+  document.getElementById('mobileMenuBtn').addEventListener('click', openDrawer);
+  backdropEl.addEventListener('click', closeDrawer);
+
+  document.addEventListener('click', function(e){
+    var goto = e.target.closest('[data-goto]');
+    if(goto){
+      var key = goto.getAttribute('data-goto');
+      if(key === 'final15') showFinal15();
+      else showTopic(key.replace('topic-',''));
+      closeDrawer();
+      return;
+    }
+    var gotoQ = e.target.closest('[data-goto-q]');
+    if(gotoQ){
+      gotoQuestion(gotoQ.getAttribute('data-goto-q'));
+      closeDrawer();
+      return;
     }
   });
 
   // ---------- search ----------
   var searchInput = document.getElementById('searchInput');
-  var allGroups = Array.prototype.slice.call(document.querySelectorAll('.topic-group'));
-  var allCards = Array.prototype.slice.call(document.querySelectorAll('.qcard'));
-  var visibleCountEl = document.getElementById('visibleCount');
-
+  var searchResults = document.getElementById('searchResults');
   var debounceT = null;
   searchInput.addEventListener('input', function(){
     clearTimeout(debounceT);
-    debounceT = setTimeout(runSearch, 90);
+    debounceT = setTimeout(runSearch, 100);
   });
-
+  document.addEventListener('click', function(e){
+    if(!e.target.closest('.search-wrap')) searchResults.classList.remove('show');
+  });
   function runSearch(){
     var q = searchInput.value.trim().toLowerCase();
-    var shown = 0;
-    if(!q){
-      document.getElementById('final15').style.display = '';
-      allCards.forEach(function(c){ c.style.display = ''; shown++; });
-      allGroups.forEach(function(g){ g.style.display = ''; });
+    if(q.length < 2){ searchResults.classList.remove('show'); searchResults.innerHTML=''; return; }
+    var matches = DATA.questions.filter(function(item){
+      return (item.id + ' ' + item.q).toLowerCase().indexOf(q) !== -1 || item.body.toLowerCase().indexOf(q) !== -1;
+    }).slice(0, 25);
+    if(!matches.length){
+      searchResults.innerHTML = '<div class="search-result" style="cursor:default;color:var(--ink-400)">No matches</div>';
     } else {
-      document.getElementById('final15').style.display = 'none';
-      allGroups.forEach(function(g){
-        var anyVisible = false;
-        var cards = g.querySelectorAll('.qcard');
-        cards.forEach(function(c){
-          var id = c.id.replace('q-','');
-          var entry = qCardEls[id];
-          var hay = (entry.raw.id + ' ' + entry.raw.q + ' ' + entry.raw.body).toLowerCase();
-          var match = hay.indexOf(q) !== -1;
-          c.style.display = match ? '' : 'none';
-          if(match){ anyVisible = true; shown++; if(q.length>2){ openCard(id); } }
-        });
-        g.style.display = anyVisible ? '' : 'none';
-      });
+      searchResults.innerHTML = matches.map(function(m){
+        return '<button class="search-result" data-goto-q="' + m.id + '"><span class="sid">' + m.id + '</span><span class="stext">' + escapeHTML(m.q) + '</span></button>';
+      }).join('');
     }
-    visibleCountEl.textContent = shown + ' shown';
+    searchResults.classList.add('show');
   }
+  searchResults.addEventListener('click', function(e){
+    var btn = e.target.closest('[data-goto-q]');
+    if(btn){ gotoQuestion(btn.getAttribute('data-goto-q')); searchResults.classList.remove('show'); searchInput.value=''; }
+  });
 
-  // ---------- scroll-spy for active nav item ----------
-  var navButtons = Array.prototype.slice.call(document.querySelectorAll('#topicNav .nav-item'));
-  var spyIO = new IntersectionObserver(function(entries){
-    entries.forEach(function(entry){
-      if(entry.isIntersecting){
-        var id = entry.target.id;
-        navButtons.forEach(function(b){
-          b.classList.toggle('active', b.getAttribute('data-jump') === id);
-        });
-      }
-    });
-  }, { rootMargin: '-20% 0px -70% 0px' });
-  allGroups.forEach(function(g){ spyIO.observe(g); });
+  // ---------- init from hash ----------
+  var initialHash = (location.hash || '').replace('#','');
+  if(initialHash === 'final15'){ showFinal15(); }
+  else if(initialHash.indexOf('topic-') === 0){ showTopic(initialHash.replace('topic-',''), {skipScrollTop:true, skipHash:true}); }
+  else { showTopic('1', {skipScrollTop:true, skipHash:true}); }
 
+  window.addEventListener('hashchange', function(){
+    var h = (location.hash || '').replace('#','');
+    if(h === 'final15') showFinal15();
+    else if(h.indexOf('topic-') === 0) showTopic(h.replace('topic-',''), {skipHash:true});
+  });
 })();
 </script>
 
